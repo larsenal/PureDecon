@@ -168,6 +168,7 @@ html,body{width:100%;background:#000;overflow:hidden}
 .winner-box{background:var(--red);border-radius:12px;padding:24px 32px;margin-top:20px;display:none;text-align:center}
 .winner-box h3{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;text-transform:uppercase;margin-bottom:6px}
 .winner-box p{font-size:22px}
+
 /* ── MODE PAYSAGE ─────────────────────────────────────────── */
 @media screen and (orientation: landscape) {
 
@@ -176,7 +177,6 @@ html,body{width:100%;background:#000;overflow:hidden}
   height: 100%;
   background: #000;
   overflow: hidden;
-  display: flex;
   align-items: center;
   justify-content: center;
   }
@@ -456,15 +456,21 @@ function scaleKiosk() {
 
   var scale = Math.min(window.innerWidth / W, window.innerHeight / H);
 
+  var scaledW = Math.round(W * scale);
+  var scaledH = Math.round(H * scale);
+
   k.style.width  = W + 'px';
   k.style.height = H + 'px';
   k.style.transform = 'scale(' + scale + ')';
-  k.style.transformOrigin = 'center center';
+  k.style.transformOrigin = 'top left';
+
+  // Centrage manuel : décale le kiosque pour le centrer dans l'écran
+  k.style.marginLeft = Math.round((window.innerWidth  - scaledW) / 2) + 'px';
+  k.style.marginTop  = Math.round((window.innerHeight - scaledH) / 2) + 'px';
 
   document.body.style.width  = '100vw';
   document.body.style.height = '100vh';
 }
-
 window.addEventListener('resize', scaleKiosk);
 window.addEventListener('orientationchange', scaleKiosk);
 scaleKiosk();
