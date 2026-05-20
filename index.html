@@ -168,6 +168,74 @@ html,body{width:100%;background:#000;overflow:hidden}
 .winner-box{background:var(--red);border-radius:12px;padding:24px 32px;margin-top:20px;display:none;text-align:center}
 .winner-box h3{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;text-transform:uppercase;margin-bottom:6px}
 .winner-box p{font-size:22px}
+/* ── MODE PAYSAGE ─────────────────────────────────────────── */
+@media screen and (orientation: landscape) {
+
+  html, body {
+    width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  }
+
+  .kiosk {
+    width: 1920px;
+    height: 1080px;
+    transform-origin: top left;
+  }
+
+  .screen {
+    width: 1920px;
+    height: 1080px;
+  }
+
+  /* Top bar moins haute */
+  .top-bar {
+    height: 90px;
+    padding: 18px 50px;
+  }
+  .logo-pd img { height: 52px; }
+  .logo-ar img { height: 38px; }
+
+  /* Nav bas moins haute */
+  .nav-bar {
+    height: 90px;
+    padding: 16px 60px;
+  }
+
+  /* Body scrollable recalculé */
+  .content-body {
+    height: calc(1080px - 90px - 90px);
+    padding: 30px 60px;
+    gap: 20px;
+  }
+
+  /* Titres plus compacts */
+  .section-title { font-size: 48px; }
+  .stat-num      { font-size: 56px; }
+
+  /* Grille home : 4 colonnes en paysage */
+  .tile-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .tile.special {
+    grid-column: span 4;
+    min-height: 110px;
+  }
+  .tile { min-height: 140px; padding: 24px 16px; }
+
+  /* Hero logo moins grand */
+  .hero-logo-banner { padding: 20px 60px 0; }
+  .hero-logo-banner img { height: 160px; }
+  .hero-title  { font-size: 44px; }
+  .hero-subtitle { font-size: 18px; margin-bottom: 24px; }
+
+  /* Stats row */
+  .stat-card .sc-num { font-size: 38px; }
+}
 </style>
 </head>
 <body>
@@ -381,11 +449,24 @@ var contentScreens = ['s1','s2','s3','s4','s5','s6'];
 
 function scaleKiosk() {
   var k = document.getElementById('kiosk');
-  var scale = window.innerWidth / 1080;
+  var isLandscape = window.innerWidth > window.innerHeight;
+
+  var W = isLandscape ? 1920 : 1080;
+  var H = isLandscape ? 1080 : 1920;
+
+  var scale = Math.min(window.innerWidth / W, window.innerHeight / H);
+
+  k.style.width  = W + 'px';
+  k.style.height = H + 'px';
   k.style.transform = 'scale(' + scale + ')';
-  document.body.style.height = Math.round(1920 * scale) + 'px';
+  k.style.transformOrigin = 'center center';
+
+  document.body.style.width  = '100vw';
+  document.body.style.height = '100vh';
 }
+
 window.addEventListener('resize', scaleKiosk);
+window.addEventListener('orientationchange', scaleKiosk);
 scaleKiosk();
 
 function goTo(id) {
